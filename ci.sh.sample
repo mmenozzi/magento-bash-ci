@@ -1,0 +1,20 @@
+#!/bin/sh
+
+export db_host=""
+export db_user=""
+export db_pass=""
+export db_name=""
+export base_url=""
+export db_test_name=""
+export install_sample_data="" # 'yes' or 'no'
+
+export magento_dir="magento" # Magento directory name without heading or trailing slashes
+export phpunit_filter="" # [OPTIONAL] Filter (--filter) for phpunit command
+
+export MAGENTO_VERSION="magento-ce-1.8.1.0" # Which Magento version to install (see n98-magerun install command)
+
+export BASE_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )" # Do not edit this line
+export CI_LIB_DIR="" # Absolute path of the directory where are located CI scripts
+
+sh ${CI_LIB_DIR}/ci-install.sh
+sh ${CI_LIB_DIR}/ci-test.sh
