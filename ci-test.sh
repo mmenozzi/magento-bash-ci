@@ -1,8 +1,14 @@
 #!/bin/sh
 
-cd ${BASE_DIR}/${magento_dir} && pwd
+cd ${BASE_DIR}/${magento_dir}
+
+PHPUNIT_PATH=`which phpunit`
+if [ -f ${BASE_DIR}/vendor/bin/phpunit ]; then
+    PHPUNIT_PATH="${BASE_DIR}/vendor/bin/phpunit"
+fi
+
 if [ -z "${phpunit_filter}" ]; then
-    ${BASE_DIR}/vendor/bin/phpunit
+    ${PHPUNIT_PATH}
 else
-    ${BASE_DIR}/vendor/bin/phpunit --filter ${phpunit_filter}
+    ${PHPUNIT_PATH} --filter ${phpunit_filter}
 fi
