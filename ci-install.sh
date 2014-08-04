@@ -29,7 +29,7 @@ fi
 
 # Installing Magento
 INSTALL_NO_DOWNLOAD=""
-if [ ! -f "${BASE_DIR}/${magento_dir}/app/Mage.php" ]; then
+if [ -f "${BASE_DIR}/${magento_dir}/app/Mage.php" ]; then
     INSTALL_NO_DOWNLOAD="--noDownload"
 fi
 mysql -uroot --password="${db_pass}" -e "DROP DATABASE IF EXISTS \`${db_name}\`"
