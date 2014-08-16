@@ -22,11 +22,6 @@ if [ -z "$MODMAN_PATH" ]; then
     MODMAN_PATH="${BASE_DIR}/modman.sh"
 fi
 
-PHPUNIT_PATH=`which phpunit`
-if [ -f ${BASE_DIR}/vendor/bin/phpunit ]; then
-    PHPUNIT_PATH="${BASE_DIR}/vendor/bin/phpunit"
-fi
-
 # Installing Magento
 INSTALL_NO_DOWNLOAD=""
 if [ -f "${BASE_DIR}/${magento_dir}/app/Mage.php" ]; then
@@ -40,16 +35,6 @@ cd ${magento_dir} && php ${N98_PATH} cache:disable && cd ${BASE_DIR}
 
 # Installing composer dependencies
 ${COMPOSER_PATH} install
-
-# Installing & configuring EcomDev_PHPUnit
-mysql -uroot --password="${db_pass}" -e "DROP DATABASE IF EXISTS \`${db_test_name}\`"
-mysql -uroot --password="${db_pass}" -e "CREATE DATABASE \`${db_test_name}\`"
-rm -f "${BASE_DIR}/${magento_dir}/app/etc/local.xml.phpunit"
-cd ${magento_dir}/shell && php ecomdev-phpunit.php --action install && cd ${BASE_DIR}
-cd ${magento_dir}/shell && php ecomdev-phpunit.php --action change-status && cd ${BASE_DIR}
-cd ${magento_dir}/shell && php ecomdev-phpunit.php --action magento-config --db-name ${db_test_name} --base-url ${base_url} && cd ${BASE_DIR}
-cd ${magento_dir} && ${PHPUNIT_PATH} --filter EcomDev_PHPUnit
-cd ${BASE_DIR}
 
 # Modman module linkng if needed
 if [ -f ${BASE_DIR}/modman ]; then
