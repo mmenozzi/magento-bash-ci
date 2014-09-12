@@ -23,18 +23,19 @@ if [ -z "$MODMAN_PATH" ]; then
 fi
 
 # Installing Magento
-INSTALL_NO_DOWNLOAD=""
-if [ -f "${BASE_DIR}/${magento_dir}/app/Mage.php" ]; then
-    INSTALL_NO_DOWNLOAD="--noDownload"
-fi
 mysql -uroot --password="${db_pass}" -e "DROP DATABASE IF EXISTS \`${db_name}\`"
 rm -f "${BASE_DIR}/${magento_dir}/app/etc/local.xml"
-php ${N98_PATH} install ${INSTALL_NO_DOWNLOAD} --installationFolder=${magento_dir} --dbHost=${db_host} --dbUser=${db_user} --dbPass=${db_pass} --dbName=${db_name} --installSampleData=${install_sample_data} --useDefaultConfigParams=yes --magentoVersionByName=${MAGENTO_VERSION} --baseUrl=${base_url}
+if [ -f "${BASE_DIR}/${magento_dir}/app/Mage.php" ]; then
+    # Installing composer dependencies
+    ${COMPOSER_PATH} install
+    php ${N98_PATH} install --noDownload --installationFolder=${magento_dir} --dbHost=${db_host} --dbUser=${db_user} --dbPass=${db_pass} --dbName=${db_name} --installSampleData=${install_sample_data} --useDefaultConfigParams=yes --magentoVersionByName=${MAGENTO_VERSION} --baseUrl=${base_url}
+else
+    php ${N98_PATH} install --installationFolder=${magento_dir} --dbHost=${db_host} --dbUser=${db_user} --dbPass=${db_pass} --dbName=${db_name} --installSampleData=${install_sample_data} --useDefaultConfigParams=yes --magentoVersionByName=${MAGENTO_VERSION} --baseUrl=${base_url}
+    ${COMPOSER_PATH} install
+fi
 cd ${magento_dir} && php ${N98_PATH} cache:clean && cd ${BASE_DIR}
 cd ${magento_dir} && php ${N98_PATH} cache:disable && cd ${BASE_DIR}
 
-# Installing composer dependencies
-${COMPOSER_PATH} install
 
 # Modman module linkng if needed
 if [ -f ${BASE_DIR}/modman ]; then
