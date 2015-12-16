@@ -7,7 +7,7 @@ PHP_PATH=`which php`
 
 N98_PATH=`which n98-magerun.phar`
 if [ -z "$N98_PATH" ]; then
-    wget https://raw.github.com/netz98/n98-magerun/master/n98-magerun.phar
+    wget http://files.magerun.net/n98-magerun-latest.phar -O n98-magerun.phar
     N98_PATH="${BASE_DIR}/n98-magerun.phar"
 fi
 
