@@ -17,8 +17,8 @@ cd ${magento_dir}/shell && php ecomdev-phpunit.php --action magento-config --db-
 cd ${magento_dir} && ${PHPUNIT_PATH} --filter EcomDev_PHPUnit
 cd ${BASE_DIR}/${magento_dir}
 
-if [ -z "${phpunit_filter}" ]; then
+if [ -z "${MBC_PHPUNIT_ARGS}" ]; then
     ${PHPUNIT_PATH}
 else
-    ${PHPUNIT_PATH} --filter ${phpunit_filter}
+    ${PHPUNIT_PATH} ${MBC_PHPUNIT_ARGS}
 fi

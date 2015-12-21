@@ -11,7 +11,7 @@ export base_url=""                          # Magento base URL (remember the tra
 export install_sample_data="no"             # Install sample data ('yes' or 'no')
 
 export magento_dir="magento"                # Magento directory name without heading or trailing slashes
-export phpunit_filter=""                    # [OPTIONAL] Filter (--filter) for phpunit command
+export MBC_PHPUNIT_ARGS=""                  # [OPTIONAL] Arguments for PHPUnit command (e.g. "--log-junit junit.xml")
 
 export MAGENTO_VERSION="magento-ce-1.9.1.1" # Which Magento version to install (see n98-magerun install command)
 
