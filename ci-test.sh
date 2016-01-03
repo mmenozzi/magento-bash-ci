@@ -8,8 +8,8 @@ if [ -f ${BASE_DIR}/vendor/bin/phpunit ]; then
 fi
 
 # Installing & configuring EcomDev_PHPUnit
-mysql -uroot --password="${db_pass}" -e "DROP DATABASE IF EXISTS \`${db_test_name}\`"
-mysql -uroot --password="${db_pass}" -e "CREATE DATABASE \`${db_test_name}\`"
+mysql -h${db_host} -u${db_user} --password="${db_pass}" -e "DROP DATABASE IF EXISTS \`${db_test_name}\`"
+mysql -h${db_host} -u${db_user} --password="${db_pass}" -e "CREATE DATABASE \`${db_test_name}\`"
 rm -f "${BASE_DIR}/${magento_dir}/app/etc/local.xml.phpunit"
 cd ${magento_dir}/shell && php ecomdev-phpunit.php --action install && cd ${BASE_DIR}
 cd ${magento_dir}/shell && php ecomdev-phpunit.php --action change-status && cd ${BASE_DIR}
