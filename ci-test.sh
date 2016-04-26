@@ -14,9 +14,14 @@ rm -f "${BASE_DIR}/${magento_dir}/app/etc/local.xml.phpunit"
 cd ${magento_dir}/shell && php ecomdev-phpunit.php --action install && cd ${BASE_DIR}
 cd ${magento_dir}/shell && php ecomdev-phpunit.php --action change-status && cd ${BASE_DIR}
 cd ${magento_dir}/shell && php ecomdev-phpunit.php --action magento-config --db-name ${db_test_name} --base-url ${base_url} && cd ${BASE_DIR}
-cd ${magento_dir} && ${PHPUNIT_PATH} --filter EcomDev_PHPUnit
-cd ${BASE_DIR}/${magento_dir}
 
+if [ -z "${PHPUNIT_CONFIG_PATH}" ]; then
+    PHPUNIT_CONFIG_PATH="${BASE_DIR}/${magento_dir}/phpunit.xml.dist"
+fi
+
+TEST_WD="$( dirname "${PHPUNIT_CONFIG_PATH}" )"
+cd ${TEST_WD}
+${PHPUNIT_PATH} --filter EcomDev_PHPUnit
 if [ -z "${MBC_PHPUNIT_ARGS}" ]; then
     ${PHPUNIT_PATH}
 else
