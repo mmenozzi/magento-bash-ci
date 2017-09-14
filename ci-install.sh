@@ -30,7 +30,7 @@ if [ -f ${BASE_DIR}/vendor/bin/composerCommandIntegrator.php ]; then
 fi
 
 # Installing Magento
-mysql -uroot --password="${db_pass}" -e "DROP DATABASE IF EXISTS \`${db_name}\`"
+mysql -h${db_host} -u${db_user} --password="${db_pass}" -e "DROP DATABASE IF EXISTS \`${db_name}\`"
 rm -f "${BASE_DIR}/${magento_dir}/app/etc/local.xml"
 if [ -f "${BASE_DIR}/${magento_dir}/app/Mage.php" ]; then
     # Installing composer dependencies
