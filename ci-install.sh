@@ -3,28 +3,28 @@
 cd ${BASE_DIR}
 
 # Gathering dependencies path
-PHP_PATH=`which php`
+PHP_PATH=${PHP_PATH:-`which php`}
 
-N98_PATH=`which n98-magerun.phar`
+N98_PATH=${N98_PATH:-`which n98-magerun.phar`}
 if [ -z "$N98_PATH" ]; then
     wget http://files.magerun.net/n98-magerun-latest.phar -O n98-magerun.phar
     N98_PATH="${BASE_DIR}/n98-magerun.phar"
 fi
 
-COMPOSER_PATH=`which composer`
+COMPOSER_PATH=${COMPOSER_PATH:-`which composer`}
 if [ -z "$COMPOSER_PATH" ]; then
     curl -sS https://getcomposer.org/installer | php
     COMPOSER_PATH="${BASE_DIR}/composer.phar"
 fi
 
-MODMAN_PATH=`which modman`
+MODMAN_PATH=${MODMAN_PATH:-`which modman`}
 if [ -z "$MODMAN_PATH" ]; then
     wget https://raw.githubusercontent.com/colinmollenhour/modman/master/modman -O modman.sh
     chmod a+x ${BASE_DIR}/modman.sh
     MODMAN_PATH="${BASE_DIR}/modman.sh"
 fi
 
-COMPOSER_COMMAND_INTEGRATOR_PATH="";
+COMPOSER_COMMAND_INTEGRATOR_PATH=${COMPOSER_COMMAND_INTEGRATOR_PATH:-""};
 if [ -f ${BASE_DIR}/vendor/bin/composerCommandIntegrator.php ]; then
     COMPOSER_COMMAND_INTEGRATOR_PATH="${BASE_DIR}/vendor/bin/composerCommandIntegrator.php";
 fi
