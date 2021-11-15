@@ -30,7 +30,11 @@ if [ -f ${BASE_DIR}/vendor/bin/composerCommandIntegrator.php ]; then
 fi
 
 # Installing Magento
-mysql -h${db_host} -u${db_user} --password="${db_pass}" -e "DROP DATABASE IF EXISTS \`${db_name}\`"
+if [ ! -z ${db_port} ]; then
+  magerun_db_port="--dbPort=${db_port}"
+  db_port="-P${db_port}"
+fi
+mysql -h${db_host} ${db_port} -u${db_user} --password="${db_pass}" -e "DROP DATABASE IF EXISTS \`${db_name}\`"
 rm -f "${BASE_DIR}/${magento_dir}/app/etc/local.xml"
 if [ -f "${BASE_DIR}/${magento_dir}/app/Mage.php" ]; then
     # Installing composer dependencies
@@ -39,9 +43,9 @@ if [ -f "${BASE_DIR}/${magento_dir}/app/Mage.php" ]; then
     if [ ! -z "$COMPOSER_COMMAND_INTEGRATOR_PATH" ]; then
         php ${COMPOSER_COMMAND_INTEGRATOR_PATH} magento-module-deploy
     fi
-    php ${N98_PATH} install --noDownload --installationFolder=${magento_dir} --dbHost=${db_host} --dbUser=${db_user} --dbPass=${db_pass} --dbName=${db_name} --installSampleData=${install_sample_data} --useDefaultConfigParams=yes --magentoVersionByName=${MAGENTO_VERSION} --baseUrl=${base_url}
+    php ${N98_PATH} install --noDownload --installationFolder=${magento_dir} --dbHost=${db_host} ${magerun_db_port} --dbUser=${db_user} --dbPass=${db_pass} --dbName=${db_name} --installSampleData=${install_sample_data} --useDefaultConfigParams=yes --magentoVersionByName=${MAGENTO_VERSION} --baseUrl=${base_url}
 else
-    php ${N98_PATH} install --installationFolder=${magento_dir} --dbHost=${db_host} --dbUser=${db_user} --dbPass=${db_pass} --dbName=${db_name} --installSampleData=${install_sample_data} --useDefaultConfigParams=yes --magentoVersionByName=${MAGENTO_VERSION} --baseUrl=${base_url}
+    php ${N98_PATH} install --installationFolder=${magento_dir} --dbHost=${db_host} ${magerun_db_port} --dbUser=${db_user} --dbPass=${db_pass} --dbName=${db_name} --installSampleData=${install_sample_data} --useDefaultConfigParams=yes --magentoVersionByName=${MAGENTO_VERSION} --baseUrl=${base_url}
     ${COMPOSER_PATH} install
     # Sometimes it's needed to run composer-command-integrator to successfully deploy extensions
     if [ ! -z "$COMPOSER_COMMAND_INTEGRATOR_PATH" ]; then
