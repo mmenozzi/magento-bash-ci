@@ -35,6 +35,8 @@ if [ ! -z ${db_port} ]; then
   db_port="-P${db_port}"
 fi
 mysql -h${db_host} ${db_port} -u${db_user} --password="${db_pass}" -e "DROP DATABASE IF EXISTS \`${db_name}\`"
+# With php8 n98 does not create the database if it does not exist. That's why we need to create it manually
+mysql -h${db_host} ${db_port} -u${db_user} --password="${db_pass}" -e "CREATE DATABASE \`${db_name}\`"
 rm -f "${BASE_DIR}/${magento_dir}/app/etc/local.xml"
 if [ -f "${BASE_DIR}/${magento_dir}/app/Mage.php" ]; then
     # Installing composer dependencies
